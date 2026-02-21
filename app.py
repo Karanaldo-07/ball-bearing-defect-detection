@@ -12,6 +12,14 @@ import numpy as np
 from tensorflow import keras
 import os
 
+import gdown
+
+MODEL_PATH = "models/best_model.h5"
+
+if not os.path.exists(MODEL_PATH):
+    os.makedirs("models", exist_ok=True)
+    url = "https://drive.google.com/uc?id=1SRnyn7LkFBTArmX9vhg2mwTDT2QRazW"
+    gdown.download(url, MODEL_PATH, quiet=False)
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your-secret-key-here-change-in-production'
