@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ball Bearing Defect Detection AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="page-gradient">
+    <canvas id="particlesCanvas" aria-hidden="true"></canvas>
+    <div class="bg-shapes">
+        <div class="bg-shape bg-shape-1"></div>
+        <div class="bg-shape bg-shape-2"></div>
+        <div class="bg-shape bg-shape-3"></div>
+    </div>
+
+    <div class="page-shell">
+        <div class="nav-bar fade-in-up">
+            <div class="nav-brand">
+                <div class="nav-logo-circle"></div>
+                <span class="nav-title">BearingVision AI</span>
+            </div>
+            <div class="nav-tag">Real‑time Visual Inspection</div>
+        </div>
+
+        <main class="hero-layout fade-in-up-delayed">
+            <section class="hero-copy hero-parallax" id="heroCopy">
+                <p class="eyebrow">Ball Bearing Defect Detection AI</p>
+                <h1 class="hero-title">Automated visual inspection<br>for precision manufacturing.</h1>
+                <p class="hero-subtitle">
+                    Upload a ball bearing image and let our CNN‑powered inspection engine instantly classify it as
+                    <strong>OK</strong> or <strong>Defective</strong> with explainable Grad‑CAM heatmaps.
+                </p>
+                <div class="hero-metrics">
+                    <div class="metric-card glass-card">
+                        <span class="metric-label">Model Type</span>
+                        <span class="metric-value">CNN / Transfer Learning</span>
+                    </div>
+                    <div class="metric-card glass-card">
+                        <span class="metric-label">Output</span>
+                        <span class="metric-value">OK · Defective · Confidence</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="hero-panel glass-card" id="heroPanel">
+                <div class="hero-glow" aria-hidden="true"></div>
+                <form id="uploadForm" method="POST" action="/predict" enctype="multipart/form-data">
+                    <div class="upload-area modern-upload" id="uploadArea">
+                        <div class="upload-inner">
+                            <div class="upload-icon-orbit">
+                                <div class="orbit-circle"></div>
+                                <div class="orbit-circle orbit-delay"></div>
+                                <svg class="upload-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="17 8 12 3 7 8"></polyline>
+                                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                                </svg>
+                            </div>
+                            <h2 class="panel-title">Upload ball bearing image</h2>
+                            <p class="panel-subtitle">Drag & drop, or browse from your device.</p>
+                            <input type="file" id="fileInput" name="file" accept="image/*" required>
+                            <button type="button" class="btn-ghost" id="browseButton">Choose file</button>
+                            <p class="file-info" id="fileInfo">No file selected yet.</p>
+                        </div>
+                        <div class="preview-shell" id="previewShell" aria-hidden="true">
+                            <p class="preview-label">Live preview</p>
+                            <div class="preview-card">
+                                <img id="imagePreview" alt="Preview" />
+                                <div class="scanner-overlay" id="scannerOverlay" aria-hidden="true">
+                                    <div class="scanner-line"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="options options-row">
+                        <label class="toggle-switch">
+                            <input type="checkbox" name="show_gradcam" value="true">
+                            <span class="toggle-slider"></span>
+                            <span class="toggle-label">Show Grad‑CAM heatmap</span>
+                        </label>
+                    </div>
+                    <button type="submit" class="btn-primary-cta" id="submitBtn">
+                        <span class="btn-inner">
+                            <span class="btn-text">Run AI inspection</span>
+                            <span class="btn-spinner" id="loader">
+                                <span class="spinner-dot"></span>
+                                <span class="spinner-dot spinner-dot-delay"></span>
+                                <span class="spinner-dot spinner-dot-delay-2"></span>
+                            </span>
+                        </span>
+                    </button>
+                    {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                            <div class="alert-banner">
+                                {% for message in messages %}
+                                    <p>{{ message }}</p>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    {% endwith %}
+                </form>
+            </section>
+        </main>
+
+        <section class="info-grid fade-in-up-delayed-2">
+            <div class="info-pill glass-card">
+                <span class="pill-icon">1</span>
+                <div>
+                    <h3>Upload</h3>
+                    <p>Capture or upload a high‑resolution ball bearing image from your line.</p>
+                </div>
+            </div>
+            <div class="info-pill glass-card">
+                <span class="pill-icon">2</span>
+                <div>
+                    <h3>Inspect</h3>
+                    <p>Our CNN analyzes surface features and patterns in milliseconds.</p>
+                </div>
+            </div>
+            <div class="info-pill glass-card">
+                <span class="pill-icon">3</span>
+                <div>
+                    <h3>Decide</h3>
+                    <p>Review classification, confidence score, and optional Grad‑CAM heatmap.</p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer-bar fade-in-up-delayed-3">
+            <p>Ball Bearing Defect Detection AI · Powered by CNN & Flask</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

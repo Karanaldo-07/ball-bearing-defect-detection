@@ -1,0 +1,55 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv
+
+# Model files
+models/*.h5
+models/*.hdf5
+models/*.pkl
+models/*.pb
+
+# Dataset (don't commit large files)
+dataset/**/*
+!dataset/.gitkeep
+
+# Uploads
+uploads/*
+!uploads/.gitkeep
+
+# Static files (generated)
+static/gradcam/*
+!static/gradcam/.gitkeep
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Environment variables
+.env
+.env.local
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/

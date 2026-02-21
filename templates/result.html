@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Result · Ball Bearing Defect Detection AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="page-gradient">
+    <canvas id="particlesCanvas" aria-hidden="true"></canvas>
+    <div class="bg-shapes">
+        <div class="bg-shape bg-shape-1"></div>
+        <div class="bg-shape bg-shape-2"></div>
+        <div class="bg-shape bg-shape-3"></div>
+    </div>
+
+    <div class="page-shell">
+        <div class="nav-bar fade-in-up">
+            <div class="nav-brand">
+                <div class="nav-logo-circle"></div>
+                <span class="nav-title">BearingVision AI</span>
+            </div>
+            <a href="{{ url_for('index') }}" class="nav-link">New inspection</a>
+        </div>
+
+        <main class="result-layout fade-in-up-delayed">
+            <section class="result-main glass-card result-animate">
+                <header class="result-header-row">
+                    <div>
+                        <p class="eyebrow">Inspection complete</p>
+                        <h1 class="hero-title small">Ball bearing analysis result</h1>
+                    </div>
+                    <a href="{{ url_for('index') }}" class="btn-ghost-outline">Upload another</a>
+                </header>
+
+                <div class="result-grid">
+                    <div class="result-image-card image-fade-in">
+                        <p class="preview-label">Analyzed frame</p>
+                        <div class="preview-card shadow-strong">
+                            <img src="{{ result.image_url }}"
+                                 alt="Uploaded Image"
+                                 id="previewImage">
+                            <div class="scanner-overlay" aria-hidden="true">
+                                <div class="scanner-line"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="result-metrics">
+                        <div class="prediction-badge modern {{ 'defective' if result.predicted_class == 'Defective' else 'ok' }}">
+                            <span class="badge-dot"></span>
+                            <div class="badge-text-block">
+                                <span class="badge-label">Classification</span>
+                                <span class="badge-value">{{ result.predicted_class }}</span>
+                            </div>
+                        </div>
+
+                        <div class="confidence-meter glass-subcard">
+                            <div class="confidence-header">
+                                <div>
+                                    <span class="confidence-title">Model confidence</span>
+                                    <span class="confidence-percent">{{ "%.1f"|format(result.confidence * 100) }}%</span>
+                                </div>
+                                <span class="confidence-chip">
+                                    {{ 'High risk' if result.predicted_class == 'Defective' else 'Pass' }}
+                                </span>
+                            </div>
+                            <div class="meter-bar animated">
+                                <div class="meter-fill"
+                                     data-confidence="{{ result.confidence * 100 }}"
+                                     data-state="{{ 'defective' if result.predicted_class == 'Defective' else 'ok' }}">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="result-details glass-subcard">
+                            <div class="detail-row">
+                                <span class="detail-label">Raw score</span>
+                                <span class="detail-value mono">{{ "%.4f"|format(result.raw_score) }}</span>
+                            </div>
+                            {% if result.image_info %}
+                            <div class="detail-row">
+                                <span class="detail-label">Resolution</span>
+                                <span class="detail-value">{{ result.image_info.width }} × {{ result.image_info.height }} px</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Channels</span>
+                                <span class="detail-value">{{ result.image_info.channels }}</span>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                {% if result.gradcam_path %}
+                <section class="gradcam-shell fade-in-up-delayed-2">
+                    <header class="gradcam-header">
+                        <h2>Grad‑CAM visualization</h2>
+                        <p>Heatmap overlay showing spatial regions that most influenced the decision.</p>
+                    </header>
+                    <div class="gradcam-image shadow-strong">
+                        <img src="{{ url_for('static', filename=result.gradcam_path) }}"
+                             alt="Grad-CAM Visualization">
+                    </div>
+                </section>
+                {% endif %}
+
+                <div class="result-actions">
+                    <a href="{{ url_for('index') }}" class="btn-primary-cta">
+                        <span class="btn-inner">
+                            <span class="btn-text">Run another inspection</span>
+                        </span>
+                    </a>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer-bar fade-in-up-delayed-3">
+            <p>Ball Bearing Defect Detection AI · Explainable computer vision for manufacturing.</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
