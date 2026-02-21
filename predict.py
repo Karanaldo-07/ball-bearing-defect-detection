@@ -5,7 +5,7 @@ import requests
 import tflite_runtime.interpreter as tflite
 
 MODEL_PATH = "models/model.tflite"
-MODEL_URL = "https://github.com/Karanaldo-07/ball-bearing-defect-detection/releases/download/v1/model.tflite"
+MODEL_URL = "https://github.com/Karanaldo-07/ball-bearing-defect-detection/releases/download/model/model.tflite"
 
 
 def download_model():
