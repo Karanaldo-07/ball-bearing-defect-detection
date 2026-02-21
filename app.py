@@ -51,7 +51,7 @@ def get_predictor():
     if predictor is None:
         try:
             ensure_model()
-            predictor = BearingDefectPredictor(MODEL_PATH)
+            predictor = BearingDefectPredictor()
         except Exception as e:
             print(f"Predictor load failed: {e}")
             predictor = None
