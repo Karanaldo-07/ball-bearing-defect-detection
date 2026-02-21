@@ -10,7 +10,7 @@ import os
 import requests
 
 MODEL_PATH = "models/model.tflite"
-MODEL_URL = "https://github.com/Karanaldo-07/ball-bearing-defect-detection/releases/download/v1/model.tflite"
+MODEL_URL = "https://github.com/Karanaldo-07/ball-bearing-defect-detection/releases/download/model/model.tflite"
 
 
 # -------------------------
